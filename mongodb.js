@@ -16,12 +16,18 @@ MongoClient.connect(url, { useNewUrlParser: true }, (error, client) => {
     // MongoDB will automatically generate a database for us
     const db = client.db(dbName);
 
-    db.collection('users').insertOne({
-        name: 'My First name',
-        age: 25,
-    }, (error, result) => {
+    db.collection('users').insertMany([
+        {
+            name: 'Benson',
+            age: 25,
+        },
+        {
+            name: 'Rebecca',
+            age: 29,
+        }
+    ], (error, result) => {
         if (error) {
-            return console.log('Unable to insert user');
+            return console.log('Unable to insert to users collection');
         }
 
         console.log(result.ops);
