@@ -1,50 +1,27 @@
-// CRUD create read update delete
-
-const mongodb = require('mongodb');
-const MongoClient = mongodb.MongoClient;
+const { MongoClient, ObjectID } = require('mongodb');
+const moment  = require('moment');
 
 const url = 'mongodb://127.0.0.1/27017';
 const dbName = 'task-manager';
+const id = new ObjectID();
 
 MongoClient.connect(url, { useNewUrlParser: true }, (error, client) => {
     if (error) {
         return error;
     }
 
-    console.log('Connect to MongoDB server!');
+    console.log(id);
+    console.log(id.generationTime); // return timestamp in seconds
+    console.log(moment(id.generationTime * 1000).format('YYYY MMMM Do, h:mm:ss a')); // use timestamp in millsecond * 1000 to transfer into seconds
+    console.log(moment.unix(id.generationTime).format('YYYY MMMM Do, h:mm:ss a')); // use moment.unix() to transfer into seconds
+    console.log(id.getTimestamp());
 
-    // MongoDB will automatically generate a database for us
-    const db = client.db(dbName);
-
-    // 
-    // Goal: Insert 3 tasks into a new task collection
-    // 
-    // 1. Use insertMany  to insert three documents
-    //    - description (string), completed (boolean)
-    // 2. Setup the callback to handle error or print ops
-    // 3. Run the script
-    // 4. Refresh the database in Robo 3t and view data in tasks collection
-
-    db
-        .collection('tasks')
-        .insertMany([
-           {
-                description: 'Task 1',
-                completed: false,
-           },
-           {
-                description: 'Task 2',
-                completed: true,
-           },
-           {
-                description: 'Task 3',
-                completed: false,
-           }
-        ], (error, result) => {
-            if (error) {
-                return console.log('Uable to insert into Task collection');
-            }
-
-            console.log(result.ops);
-        });
+   const db = client.db(dbName);
+   
+   db.collection('users').insertOne({
+       name: 'Betty',
+       age: 28,
+   }, (error, result) => {
+       console.log(result.ops);
+   });
 });
