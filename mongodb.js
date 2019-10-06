@@ -12,4 +12,12 @@ MongoClient.connect(url, { useNewUrlParser: true }, (error, client) => {
     }
 
     console.log('Connect to MongoDB server!');
+
+    // MongoDB will automatically generate a database for us
+    const db = client.db(dbName);
+
+    db.collection('users').insertOne({
+        name: 'My First name',
+        age: 25,
+    });
 });
