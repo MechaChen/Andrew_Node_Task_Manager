@@ -13,18 +13,15 @@ MongoClient.connect(url, { useNewUrlParser: true }, (error, client) => {
         return error;
     }
 
-//     console.log(id);
-//     console.log(id.generationTime); // return timestamp in seconds
-//     console.log(moment(id.generationTime * 1000).format('YYYY MMMM Do, h:mm:ss a')); // use timestamp in millsecond * 1000 to transfer into seconds
-//     console.log(moment.unix(id.generationTime).format('YYYY MMMM Do, h:mm:ss a')); // use moment.unix() to transfer into seconds
-//     console.log(id.getTimestamp());
+    const db = client.db(dbName);
 
-//    const db = client.db(dbName);
-   
-//    db.collection('users').insertOne({
-//        name: 'Betty',
-//        age: 28,
-//    }, (error, result) => {
-//        console.log(result.ops);
-//    });
+    // collection.find() return a 'Cursor'
+
+    db.collection('users').find({ age: 25 }).toArray((error, docs) => {
+        console.log(docs);
+    });
+
+    db.collection('users').find({ age: 25 }).count((error, count) => {
+        console.log(count);
+    });
 });
