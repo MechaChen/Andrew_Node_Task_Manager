@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const chalk = require('chalk');
+const validator = require('validator');
 
 mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api', { 
     useNewUrlParser: true,
@@ -10,6 +11,15 @@ const User = mongoose.model('User', {
     name: {
         type: String,
         required: [true, 'There is no user without name'],
+    },
+    email: {
+        type: String,
+        require: true,
+        validate(value) {
+            if (!validator.isEmail(value)) {
+                throw new Error('Email is not valid');
+            }
+        }
     },
     age: {
         type: Number,
@@ -23,7 +33,7 @@ const User = mongoose.model('User', {
 
 const user = new User({
     name: 'Benson1',
-    age: -1,
+    email: 'tumlivein@',
 });
 
 user.save()
