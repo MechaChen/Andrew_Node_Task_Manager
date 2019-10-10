@@ -5,16 +5,24 @@ mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api', {
     useCreateIndex: true,
 });
 
-const User = mongoose.model('User', {
-    name:   { type: String },
-    age:    { type: Number },
+// 
+// Goal: Create a model for tasks
+// 
+// 1. Define the model with description and completed fields
+// 2. Create a new instance of the model
+// 3. Save the model to the database
+// 4. Test your work!
+
+const Task = new mongoose.model('Task', {
+    description: { type: String },
+    completed: { type: Boolean },
 });
 
-const me = new User({ 
-    name: 'Benson', 
-    age: 'Mike' 
+const task = new Task({
+    description: 'task',
+    completed: true,
 });
 
-me.save()
-    .then(() => console.log(me))
-    .catch((error) => console.log('Error!', error));
+task.save()
+    .then((task) => console.log(task))
+    .catch((err) => console.log(err));
