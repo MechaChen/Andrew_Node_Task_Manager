@@ -1,5 +1,9 @@
 const doWork = async () => {
-
+    return 'Benson';
 }
 
-console.log(doWork());
+doWork().then((result) => {
+    console.log('result', result);
+}).catch((e) => {
+    console.log('e', e);
+});
