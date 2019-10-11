@@ -20,12 +20,29 @@ app.post('/users', async (req, res) => {
     }
 });
 
-// 
-// Goal: Setup the task creation endpoint
-// 
-// 1. Create a seperate file for task model (load it into index.js)
-// 2. Create the task creation endpoint (handle success and error)
-// 3. Test the endpoint from postman with good and bad data
+app.get('/users', async (req, res) => {
+    try {
+        const users = await User.find({});
+        res.send(users);
+    } catch (ex) {
+        res.status(500).send();
+    }
+});
+
+app.get('/users/:id', (req, res) => {
+    const _id = req.params.id;
+
+    User.findById(_id)
+        .then((user) => {
+            if (!user) {
+                res.status(404).send();
+            }
+            res.send(user);
+        })
+        .catch((ex) => {
+            res.status(500).send(ex);
+        });
+});
 
 app.post('/tasks', async (req, res) => {
     const task = new Task(req.body);
