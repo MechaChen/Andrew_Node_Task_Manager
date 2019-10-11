@@ -1,4 +1,5 @@
 const doWork = async () => {
+    throw new Error('Something went wrong');
     return 'Benson';
 }
 
