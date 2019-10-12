@@ -67,6 +67,19 @@ app.patch('/users/:id', async (req, res) => {
     }
 });
 
+app.delete('/users/:id', async (req, res) => {
+    try {
+        const user = await User.findByIdAndDelete(req.params.id);
+
+        if (!user) {
+            return res.status(404).send();
+        }
+
+        res.send(user);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
 
 app.post('/tasks', async (req, res) => {
     const task = new Task(req.body);
@@ -109,18 +122,6 @@ app.get('/tasks/:id', async (req, res) => {
         res.status(500).send(e);
     }
 });
-
-
-// 
-// Goal: Allow for task updates
-// 
-// 1. Setup the route handler
-// 2. Send error if unknown updates
-// 3. Attempt to update the task
-//    - Handle task not found
-//    - Handle validation errors
-//    - Handle success
-// 4. Test your work!
 
 app.patch('/tasks/:id', async (req, res) => {
     const updates = Object.keys(req.body);
