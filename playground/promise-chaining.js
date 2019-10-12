@@ -10,11 +10,14 @@ const User = require('../src/models/user');
 //     console.log(e);
 // });
 
-// 
-// Goal: Mess around with promise chaining
-// 
-// 1. Create promise-chaining-2.js
-// 2. Load in mongoose and task model
-// 3. Remove a given task by id
-// 4. Get and print the total number of incomplete tasks
-// 5. Test your work!
+const updateAgeAndCount = async (id, age) => {
+    try {
+        const user = await User.findByIdAndUpdate(id, { age });
+        const count = await User.countDocuments({ age });
+        console.log(count);
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+updateAgeAndCount('5d9ecd741a2a0f0a63268d24', 24);
