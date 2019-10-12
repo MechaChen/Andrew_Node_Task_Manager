@@ -2,12 +2,14 @@ const express = require('express');
 require('./db/mongoose');
 const User = require('./models/user');
 const Task = require('./models/task');
+const userRouter = require('./routers/user');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 // parse the JSON response to Object
 app.use(express.json());
+app.use(userRouter);
 
 app.post('/users', async (req, res) => {
     const user = new User(req.body);
@@ -142,6 +144,20 @@ app.patch('/tasks/:id', async (req, res) => {
         res.send(task);
     } catch (e) {
         res.status(400).send(e);
+    }
+});
+
+app.delete('/tasks/:id', async (req, res) => {
+    try {
+        const task = await Task.findByIdAndDelete(req.params.id);
+
+        if (!task) {
+            return res.status(404).send();
+        }
+
+        res.send(task);
+    } catch (e) {
+        res.status(500).send(e);
     }
 });
 
