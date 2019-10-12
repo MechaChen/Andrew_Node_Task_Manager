@@ -13,8 +13,8 @@ app.post('/users', async (req, res) => {
     const user = new User(req.body);
 
     try {
-        const member = await user.save();
-        res.send(member);
+        const savedUser = await user.save();
+        res.status(201).send(savedUser);
     } catch (ex) {
         res.status(400).send(ex);
     }
@@ -22,26 +22,27 @@ app.post('/users', async (req, res) => {
 
 app.get('/users', async (req, res) => {
     try {
-        const users = await User.find({});
-        res.send(users);
+        const findedUsers = await User.find({});
+        res.send(findedUsers);
     } catch (ex) {
         res.status(500).send();
     }
 });
 
-app.get('/users/:id', (req, res) => {
+app.get('/users/:id', async (req, res) => {
     const _id = req.params.id;
 
-    User.findById(_id)
-        .then((user) => {
-            if (!user) {
-                res.status(404).send();
-            }
-            res.send(user);
-        })
-        .catch((ex) => {
-            res.status(500).send(ex);
-        });
+    try {
+        const findedUser = await User.findById(_id);
+
+        if (!findedUser) {
+            res.status(404).send();
+        }
+
+        res.send(findedUser);
+    } catch (e) {
+        res.status(500).send(e);
+    }
 });
 
 app.post('/tasks', async (req, res) => {
@@ -54,13 +55,6 @@ app.post('/tasks', async (req, res) => {
         res.status(400).send(ex);
     }
 });
-
-// 
-// Goal: Setup the task reading endpoints
-// 
-// 1. Create an endpoint for fetching all tasks
-// 2. Create an endpoint for fetching a task by its id
-// 3. Setup new requests in Postman and test your work
 
 app.get('/tasks', (req, res) => {
     Task.find({})
