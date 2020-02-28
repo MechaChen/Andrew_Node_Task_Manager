@@ -18,7 +18,8 @@ router.post('/users/login', async (req, res) => {
     try {
         // findByCredentials : (self-defined func) check by email & password
         const user = await User.findByCredentials(req.body.email, req.body.password);
-        res.send(user);
+        const token = await user.generateAuthToken();
+        res.send({ user, token });
     } catch (e) {
         res.status(400).send(e.message);
     }
