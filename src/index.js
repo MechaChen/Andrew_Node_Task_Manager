@@ -6,23 +6,29 @@ const taskRouter = require('./routers/task');
 const app = express();
 const port = process.env.PORT || 3000;
 
+// app.use((req, res, next) => {
+//     if (req.method === 'GET') {
+//         res.send('GET request are disabled');
+//     } else {
+//         next();
+//     }
+// })
+
 app.use((req, res, next) => {
-    if (req.method === 'GET') {
-        res.send('GET request are disabled');
-    } else {
-        next();
-    }
-})
+    res.status(503).send('Site is currently down, Check back soon!');
+});
+
+// 
+// Goal: Setup middleware for maintenance mode
+// 
+// 1. Register a new middleware function
+// 2. Send back a maintenance message with a 503 status code
+// 3. Try your requests from the server and confirm status/message shows
+
 
 app.use(express.json());
 app.use(userRouter);
 app.use(taskRouter);
-
-// 
-// Without middleware: new request -> run route handle
-// 
-// With middleware: new request -> do something -> run route handler
-// 
 
 const bcrypt = require('bcryptjs');
 
