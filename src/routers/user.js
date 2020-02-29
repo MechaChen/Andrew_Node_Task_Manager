@@ -1,6 +1,6 @@
 const express = require('express');
 const User = require('../models/user');
-
+const auth = require('../middleware/auth');
 const router = new express.Router();
 
 router.post('/users', async (req, res) => {
@@ -33,13 +33,8 @@ router.post('/users/login', async (req, res) => {
     }
 });
 
-router.get('/users', async (req, res) => {
-    try {
-        const findedUsers = await User.find({});
-        res.send(findedUsers);
-    } catch (ex) {
-        res.status(500).send();
-    }
+router.get('/users/me', auth, async (req, res) => {
+    res.send(req.user);
 });
 
 router.get('/users/:id', async (req, res) => {
@@ -87,7 +82,7 @@ router.patch('/users/:id', async (req, res) => {
 router.delete('/users/:id', async (req, res) => {
     try {
         const user = await User.findByIdAndDelete(req.params.id);
-
+        
         if (!user) {
             return res.status(404).send();
         }
