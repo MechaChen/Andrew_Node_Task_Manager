@@ -15,19 +15,11 @@ router.post('/users', async (req, res) => {
     }
 });
 
-// 
-// Goal: Have signup send back auth token
-// 
-// 1. Generate a token for the saved user
-// 2. Send back both the token and the user
-// 3. Create a new user from Postman and confirm the token is there
-
 router.post('/users/login', async (req, res) => {
     try {
-        // findByCredentials : (self-defined func) check by email & password
         const user = await User.findByCredentials(req.body.email, req.body.password);
         const token = await user.generateAuthToken();
-        res.send({ user, token });
+        res.send({ user: user.getPublicProfile(), token });
     } catch (e) {
         res.status(400).send(e.message);
     }
