@@ -46,6 +46,26 @@ router.post('/users/logout', auth, async (req, res) => {
     }
 });
 
+// 
+// Goal: Create a way to logout of all sessions
+// 
+// 1. Setup POST /users/logoutAll
+// 2. Create the router handler to wipe the tokens array
+//    - Send 200 or 500
+// 3. Test your work
+//    - Login a few times and logout of all, Check database
+
+router.post('/users/logoutAll', auth, async (req, res) => {
+    try {
+        req.user.tokens = [];
+        await req.user.save();
+
+        res.send();
+    } catch (e) {
+        res.status(500).send();
+    }
+});
+
 router.get('/users/me', auth, async (req, res) => {
     res.send(req.user);
 });
