@@ -10,18 +10,15 @@ app.use(express.json());
 app.use(userRouter);
 app.use(taskRouter);
 
-const bcrypt = require('bcryptjs');
+app.listen(port, () => console.log(`Server is up on port ${port}`));
 
-const jwt = require('jsonwebtoken');
-
-const myFunction = async () => {
-    const token = jwt.sign({ _id: 'abc123' }, 'thisismynewcourse', { expiresIn: '7 days' });
-    console.log(token);
-
-    const data = jwt.verify(token, 'thisismynewcourse');
-    console.log(data);
+const pet = {
+    name: 'Hai',
 }
 
-myFunction();
+pet.toJSON = function() {
+    console.log(this);
+    return this;
+}
 
-app.listen(port, () => console.log(`Server is up on port ${port}`));
+console.log(JSON.stringify(pet));
