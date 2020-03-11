@@ -45,6 +45,8 @@ const userSchema = mongoose.Schema({
     tokens: [
         { token: { type: String, required: true } }
     ]
+}, {
+    timestamps: true
 });
 
 userSchema.virtual('tasks', {
