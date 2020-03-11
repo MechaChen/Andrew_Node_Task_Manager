@@ -19,17 +19,20 @@ router.post('/tasks', auth, async (req, res) => {
     }
 });
 
-// 
-// Goal: Refactor GET /tasks
-// 
-// 1. Add authentication
-// 2. Return tasks only for the authenticated user
-// 3. Test your work!
-
+// GET /tasks?completed=true
 router.get('/tasks', auth, async (req, res) => {
+    const match = {}
+
+    if (req.query.completed) {
+        match.completed = req.query.completed === 'true';
+        console.log('match.completed', match.completed);
+    }
 
     try {
-        await req.user.populate('tasks').execPopulate();
+        await req.user.populate({
+            path: 'tasks',
+            match
+        }).execPopulate();
 
         res.send(req.user.tasks);
     } catch (e) {
