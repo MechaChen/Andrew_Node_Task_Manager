@@ -19,10 +19,17 @@ router.post('/tasks', auth, async (req, res) => {
     }
 });
 
-router.get('/tasks', async (req, res) => {
+// 
+// Goal: Refactor GET /tasks
+// 
+// 1. Add authentication
+// 2. Return tasks only for the authenticated user
+// 3. Test your work!
+
+router.get('/tasks', auth, async (req, res) => {
 
     try {
-        const findedTasks = await Task.find({});
+        const findedTasks = await Task.find({ owner: req.user._id });
 
         if (!findedTasks) {
             return res.status(404).send();
