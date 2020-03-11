@@ -34,11 +34,11 @@ router.get('/tasks', async (req, res) => {
     }
 });
 
-router.get('/tasks/:id', async (req, res) => {
+router.get('/tasks/:id', auth, async (req, res) => {
     const _id = req.params.id;
 
     try {
-        const findedTask = await Task.findById(_id);
+        const findedTask = await Task.findOne({ _id, owner: req.user._id });
 
         if (!findedTask) {
             return res.status(404).send();
@@ -49,14 +49,6 @@ router.get('/tasks/:id', async (req, res) => {
         res.status(500).send(e);
     }
 });
-
-// 
-// Goal: Change how tasks are updated
-// 
-// 1. Find the task
-// 2. Alter the task properties
-// 3. Save the task
-// 4. Test your work by updating a task from Postman
 
 router.patch('/tasks/:id', async (req, res) => {
     const updates = Object.keys(req.body);
@@ -72,7 +64,6 @@ router.patch('/tasks/:id', async (req, res) => {
         
         updates.forEach((update) => task[update] = req.body[update]);
         await task.save();
-        // const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
 
         if (!task) {
             return res.status(404).send();
