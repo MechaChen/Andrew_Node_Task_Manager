@@ -96,7 +96,6 @@ const upload = multer({
         fileSize: 1000000,
     },
     fileFilter(req, file, cb) {
-        console.log('Hello');
         if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
             return cb(new Error('Please upload an image'));
         }
@@ -105,8 +104,17 @@ const upload = multer({
     }
 });
 
+// 
+// Goal: Clean up error handling
+// 
+// 1. Setup an error handler function
+// 2. Send back a 400 with the error message
+// 3. Test your work
+
 router.post('/users/me/avatar', upload.single('avatar'), (req, res) => {
     res.send();
+}, (error, req, res, next) => {
+    res.status(400).send({ error: error.message });
 });
 
 module.exports = router;
