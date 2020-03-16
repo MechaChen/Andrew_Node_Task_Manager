@@ -69,9 +69,17 @@ userSchema.methods.toJSON = function () {
     return userObject;
 }
 
+// 
+// Goal: Pull JWT secret and database URL into env vars
+// 
+// 1. Create two new env vars: JWT_SECRET and MONGODB_URL
+// 2. Setup values for each in the development env files
+// 3. Swap out three hardcoded values
+// 4. Test your work, Create new user and get their profile
+
 userSchema.methods.generateAuthToken = async function() {
     const user = this;
-    const token = jwt.sign({ _id: user._id.toString() }, 'thisismynewcourse');
+    const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET);
 
     user.tokens = user.tokens.concat({ token });
     await user.save();
