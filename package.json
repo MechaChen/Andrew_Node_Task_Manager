@@ -16,7 +16,7 @@
     "env-cmd": "8.0.2",
     "express": "^4.17.1",
     "jsonwebtoken": "8.4.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "mongodb": "^3.1.10",
     "mongoose": "^5.3.16",
     "multer": "1.4.1",
